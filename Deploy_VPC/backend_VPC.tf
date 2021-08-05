@@ -4,5 +4,6 @@ terraform {
     bucket  = "intellify-saran-dev"
     key     = "terraform/remotestate/terraform.tfstate"
     region  = "ap-southeast-2"
+    dynamodb_table = "tfstatelock"
   }
 }

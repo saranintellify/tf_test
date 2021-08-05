@@ -2,7 +2,7 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc
 
 provider "aws" {
-    region = "${var.intellify_region}"
+  region = var.intellify_region
 }
 
 terraform {
@@ -29,20 +29,25 @@ resource "aws_route_table" "private_route_table" {
 resource "aws_route_table_association" "associate_public_route_to_subnet" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_vpc.myvpc.main_route_table_id
-} 
+}
 
 resource "aws_route_table_association" "associate_private_route_to_subnet" {
   subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.private_route_table.id
-} 
+}
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.myvpc.id
 }
 
+resource "aws_route" "r" {
+  route_table_id         = aws_vpc.myvpc.main_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.igw.id
+}
 resource "aws_subnet" "public_subnet" {
-    vpc_id = aws_vpc.myvpc.id
-    cidr_block = var.public_subnet
+  vpc_id     = aws_vpc.myvpc.id
+  cidr_block = var.public_subnet
   tags = {
     Name  = "public_subnet_saran"
     Owner = "saran"
@@ -50,13 +55,12 @@ resource "aws_subnet" "public_subnet" {
 }
 
 resource "aws_subnet" "private_subnet" {
-    vpc_id = aws_vpc.myvpc.id
-    cidr_block = var.private_subnet
+  vpc_id     = aws_vpc.myvpc.id
+  cidr_block = var.private_subnet
   tags = {
     Name  = "private_subnet_saran"
     Owner = "saran"
   }
 }
-
 
 
