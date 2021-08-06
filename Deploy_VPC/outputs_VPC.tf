@@ -3,9 +3,14 @@ output "out_vpc_id" {
   value       = aws_vpc.myvpc.id
 }
 
-output "out_vpc_route_table" {
+output "out_vpc_main_route_table" {
   description = "Route table of VPC"
   value       = aws_vpc.myvpc.main_route_table_id
+}
+
+output "out_vpc_private_route_table" {
+  description = "Route table of VPC"
+  value       = aws_route_table.private_route_table.id
 }
 
 output "out_igw" {
